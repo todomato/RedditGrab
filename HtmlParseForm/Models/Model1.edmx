@@ -5,6 +5,71 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="RedditScanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ChenList">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="char" MaxLength="36" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="AuthorUrl" Type="nvarchar" MaxLength="100" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" />
+          <Property Name="Url" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="PostDate" Type="datetime" />
+          <Property Name="Likes" Type="int" Nullable="false" />
+          <Property Name="RepliesCount" Type="int" Nullable="false" />
+          <Property Name="Views" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ChenProfile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="200" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="4" />
+          <Property Name="Follows" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="20" />
+          <Property Name="Answers" Type="int" />
+        </EntityType>
+        <EntityType Name="FormosaList">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="char" MaxLength="36" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" />
+          <Property Name="Url" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="PostDate" Type="datetime" />
+          <Property Name="RepliesCount" Type="int" Nullable="false" />
+          <Property Name="Views" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="FormosaReply">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="char" MaxLength="36" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UID_List" Type="char" MaxLength="36" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormosaReply2">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="char" MaxLength="36" Nullable="false" />
+          <Property Name="UID_List" Type="char" MaxLength="36" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="List">
           <Key>
             <PropertyRef Name="UID" />
@@ -19,6 +84,32 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="PostDate" Type="datetime" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'RedditScan.dbo.RedditAll' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="RedditAll">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Author" />
+            <PropertyRef Name="MessageCount" />
+            <PropertyRef Name="Url" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="UID" Type="char" MaxLength="36" />
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MessageCount" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="PostDate" Type="datetime" />
+          <Property Name="ReplyAuthor" Type="varchar" MaxLength="50" />
+          <Property Name="ReplyPostDate" Type="datetime" />
+          <Property Name="ReplyMessage" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Reply">
           <Key>
@@ -45,8 +136,30 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RedditScanModelStoreContainer">
+          <EntitySet Name="ChenList" EntityType="Self.ChenList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChenProfile" EntityType="Self.ChenProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormosaList" EntityType="Self.FormosaList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormosaReply" EntityType="Self.FormosaReply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormosaReply2" EntityType="Self.FormosaReply2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="List" EntityType="Self.List" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reply" EntityType="Self.Reply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RedditAll" EntityType="Self.RedditAll" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RedditAll].[UID] AS [UID], 
+    [RedditAll].[ID] AS [ID], 
+    [RedditAll].[Type] AS [Type], 
+    [RedditAll].[Title] AS [Title], 
+    [RedditAll].[Author] AS [Author], 
+    [RedditAll].[MessageCount] AS [MessageCount], 
+    [RedditAll].[Url] AS [Url], 
+    [RedditAll].[CreateTime] AS [CreateTime], 
+    [RedditAll].[Description] AS [Description], 
+    [RedditAll].[PostDate] AS [PostDate], 
+    [RedditAll].[ReplyAuthor] AS [ReplyAuthor], 
+    [RedditAll].[ReplyPostDate] AS [ReplyPostDate], 
+    [RedditAll].[ReplyMessage] AS [ReplyMessage]
+    FROM [dbo].[RedditAll] AS [RedditAll]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Reply_Reply" Association="Self.FK_Reply_Reply">
             <End Role="Reply" EntitySet="Reply" />
             <End Role="Reply1" EntitySet="Reply" />
@@ -63,6 +176,12 @@
             <End Role="Reply" EntitySet="Reply" />
             <End Role="Reply1" EntitySet="Reply" />
           </AssociationSet>
+          <EntitySet Name="FormosaList" EntityType="RedditScanModel.FormosaList" />
+          <EntitySet Name="RedditAll" EntityType="RedditScanModel.RedditAll" />
+          <EntitySet Name="FormosaReply" EntityType="RedditScanModel.FormosaReply" />
+          <EntitySet Name="FormosaReply2" EntityType="RedditScanModel.FormosaReply2" />
+          <EntitySet Name="ChenList" EntityType="RedditScanModel.ChenList" />
+          <EntitySet Name="ChenProfile" EntityType="RedditScanModel.ChenProfile" />
         </EntityContainer>
         <EntityType Name="List">
           <Key>
@@ -105,6 +224,95 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FormosaList">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostDate" Type="DateTime" Precision="3" />
+          <Property Name="RepliesCount" Type="Int32" Nullable="false" />
+          <Property Name="Views" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="RedditAll">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Author" />
+            <PropertyRef Name="MessageCount" />
+            <PropertyRef Name="Url" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="UID" Type="String" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MessageCount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostDate" Type="DateTime" Precision="3" />
+          <Property Name="ReplyAuthor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReplyPostDate" Type="DateTime" Precision="3" />
+          <Property Name="ReplyMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="FormosaReply">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UID_List" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="FormosaReply2">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="UID_List" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ChenList">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostDate" Type="DateTime" Precision="3" />
+          <Property Name="Likes" Type="Int32" Nullable="false" />
+          <Property Name="RepliesCount" Type="Int32" Nullable="false" />
+          <Property Name="Views" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="AuthorUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ChenProfile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Follows" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Answers" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -137,6 +345,95 @@
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormosaList">
+            <EntityTypeMapping TypeName="RedditScanModel.FormosaList">
+              <MappingFragment StoreEntitySet="FormosaList">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Views" ColumnName="Views" />
+                <ScalarProperty Name="RepliesCount" ColumnName="RepliesCount" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RedditAll">
+            <EntityTypeMapping TypeName="RedditScanModel.RedditAll">
+              <MappingFragment StoreEntitySet="RedditAll">
+                <ScalarProperty Name="ReplyMessage" ColumnName="ReplyMessage" />
+                <ScalarProperty Name="ReplyPostDate" ColumnName="ReplyPostDate" />
+                <ScalarProperty Name="ReplyAuthor" ColumnName="ReplyAuthor" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="MessageCount" ColumnName="MessageCount" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormosaReply">
+            <EntityTypeMapping TypeName="RedditScanModel.FormosaReply">
+              <MappingFragment StoreEntitySet="FormosaReply">
+                <ScalarProperty Name="UID_List" ColumnName="UID_List" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormosaReply2">
+            <EntityTypeMapping TypeName="RedditScanModel.FormosaReply2">
+              <MappingFragment StoreEntitySet="FormosaReply2">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UID_List" ColumnName="UID_List" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChenList">
+            <EntityTypeMapping TypeName="RedditScanModel.ChenList">
+              <MappingFragment StoreEntitySet="ChenList">
+                <ScalarProperty Name="AuthorUrl" ColumnName="AuthorUrl" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Views" ColumnName="Views" />
+                <ScalarProperty Name="RepliesCount" ColumnName="RepliesCount" />
+                <ScalarProperty Name="Likes" ColumnName="Likes" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChenProfile">
+            <EntityTypeMapping TypeName="RedditScanModel.ChenProfile">
+              <MappingFragment StoreEntitySet="ChenProfile">
+                <ScalarProperty Name="Answers" ColumnName="Answers" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Follows" ColumnName="Follows" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

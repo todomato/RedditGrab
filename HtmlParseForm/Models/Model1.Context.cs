@@ -27,5 +27,11 @@ namespace HtmlParseForm.Models
     
         public virtual DbSet<List> List { get; set; }
         public virtual DbSet<Reply> Reply { get; set; }
+        public virtual DbSet<FormosaList> FormosaList { get; set; }
+        public virtual DbSet<RedditAll> RedditAll { get; set; }
+        public virtual DbSet<FormosaReply> FormosaReply { get; set; }
+        public virtual DbSet<FormosaReply2> FormosaReply2 { get; set; }
+        public virtual DbSet<ChenList> ChenList { get; set; }
+        public virtual DbSet<ChenProfile> ChenProfile { get; set; }
     }
 }

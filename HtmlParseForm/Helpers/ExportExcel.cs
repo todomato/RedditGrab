@@ -19,7 +19,7 @@ namespace HtmlParseForm.Helpers
 
 
                 ws.Cells["A1"].LoadFromCollection<T>(collection, true);
-                ws.Cells.AutoFitColumns();
+                //ws.Cells.AutoFitColumns();
 
                 //儲存檔案
                 using (FileStream file = new FileStream(sFile, FileMode.Create))

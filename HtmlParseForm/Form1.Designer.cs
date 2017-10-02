@@ -42,6 +42,16 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txt_Url
@@ -109,11 +119,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(402, 10);
+            this.button2.Location = new System.Drawing.Point(863, 11);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(87, 23);
             this.button2.TabIndex = 16;
-            this.button2.Text = "爬列表";
+            this.button2.Text = "Reddit 爬列表";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -135,43 +145,151 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(402, 38);
+            this.button3.Location = new System.Drawing.Point(863, 41);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(87, 23);
             this.button3.TabIndex = 19;
-            this.button3.Text = "爬內頁";
+            this.button3.Text = "Reddit 爬內頁";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(402, 67);
+            this.button4.Location = new System.Drawing.Point(863, 71);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(87, 23);
             this.button4.TabIndex = 20;
-            this.button4.Text = "爬回覆";
+            this.button4.Text = "Reddit 爬回覆";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(524, 10);
+            this.button5.Location = new System.Drawing.Point(863, 101);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.Size = new System.Drawing.Size(87, 27);
             this.button5.TabIndex = 21;
-            this.button5.Text = "匯出";
+            this.button5.Text = "Reddit 匯出";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // saveFileDialog1
             // 
-            this.saveFileDialog1.FileName = "Excel檔案|*.xlsx";
+            this.saveFileDialog1.Filter = "Excel檔案|*.xlsx";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(633, 10);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(109, 24);
+            this.button6.TabIndex = 22;
+            this.button6.Text = "formosa 爬列表";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(633, 40);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(109, 24);
+            this.button7.TabIndex = 23;
+            this.button7.Text = "formosa 爬內頁";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(633, 71);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(109, 24);
+            this.button8.TabIndex = 24;
+            this.button8.Text = "formosa 爬回復";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(633, 101);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(109, 27);
+            this.button9.TabIndex = 25;
+            this.button9.Text = "匯出 formosa";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(748, 101);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(109, 27);
+            this.button10.TabIndex = 29;
+            this.button10.Text = "晨 匯出";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(748, 71);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(109, 24);
+            this.button11.TabIndex = 28;
+            this.button11.Text = "晨  爬回復";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(748, 40);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(109, 24);
+            this.button12.TabIndex = 27;
+            this.button12.Text = "晨 爬內頁";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(748, 10);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(109, 24);
+            this.button13.TabIndex = 26;
+            this.button13.Text = "晨 爬列表";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(748, 134);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(109, 24);
+            this.button14.TabIndex = 30;
+            this.button14.Text = "晨 作者url";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(748, 164);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(109, 24);
+            this.button15.TabIndex = 31;
+            this.button15.Text = "晨 作者profile";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(611, 372);
+            this.ClientSize = new System.Drawing.Size(1011, 374);
+            this.Controls.Add(this.button15);
+            this.Controls.Add(this.button14);
+            this.Controls.Add(this.button10);
+            this.Controls.Add(this.button11);
+            this.Controls.Add(this.button12);
+            this.Controls.Add(this.button13);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -208,6 +326,16 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button15;
     }
 }
 

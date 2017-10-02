@@ -8,6 +8,12 @@
         <EntityTypeShape EntityType="RedditScanModel.List" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="RedditScanModel.Reply" Width="1.5" PointX="3.375" PointY="0.75" />
         <AssociationConnector Association="RedditScanModel.FK_Reply_Reply" />
+        <EntityTypeShape EntityType="RedditScanModel.FormosaList" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="RedditScanModel.RedditAll" Width="1.5" PointX="3.375" PointY="4.75" />
+        <EntityTypeShape EntityType="RedditScanModel.FormosaReply" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="RedditScanModel.FormosaReply2" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="RedditScanModel.ChenList" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="RedditScanModel.ChenProfile" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
