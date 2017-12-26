@@ -225,6 +225,7 @@
             this.button10.TabIndex = 29;
             this.button10.Text = "晨 匯出";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button11
             // 
@@ -234,6 +235,7 @@
             this.button11.TabIndex = 28;
             this.button11.Text = "晨  爬回復";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button12
             // 

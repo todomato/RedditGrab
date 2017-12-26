@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using HtmlParseForm.Helpers;
 using HtmlParseForm.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -59,9 +60,9 @@ namespace HtmlParseForm
                     // 抓detail
                     //textBox2.Text += node.Attributes["href"].Value;
                     //var a = node.Attributes["data-fullname"].Value; //文章編號
-                    //textBox2.Text += node.InnerHtml.Trim() + Environment.NewLine;
+                    textBox2.Text += node.InnerHtml.Trim() + Environment.NewLine;
                     //textBox2.Text += node.InnerText.Trim() + Environment.NewLine;
-                    textBox2.Text += node.Attributes["title"].Value;
+                    //textBox2.Text += node.Attributes["title"].Value;
                 }
 
                 // /html/body/div[4]/div[2]/div/div/div  計算每頁數字
@@ -650,6 +651,7 @@ namespace HtmlParseForm
             }
         }
 
+        //攜程作者網址
         private void button14_Click(object sender, EventArgs e)
         {
             var desc_xpath = @"//*[@id=""authorDisplayName""]"; // 內文
@@ -680,17 +682,19 @@ namespace HtmlParseForm
             }
         }
 
+        //攜程內文
         private void button15_Click(object sender, EventArgs e)
         {
             var name_xapth = @"/html/body/div[2]/div/div[2]/div[2]/div[1]/span[1]";
             var address_xpath = @"/html/body/div[2]/div/div[2]/div[2]/div[2]/span[2]";
             var male_xpath = @"/html/body/div[2]/div/div[2]/div[2]/div[2]/span[1]/i"; //title
             var follows_xpath = @"/html/body/div[2]/div/div[2]/div[3]/ul/li[2]/strong/a";
+            var answers_xpanth = @"/html/body/div[2]/div/div[4]/div[4]/div[1]/ul/li[2]/a";
             // TODO 遊記數量以爬到數量為主
 
             using (var db = new RedditScanEntities())
             {
-                var list = db.ChenProfile.Where(c => c.Address == null).OrderBy(c => c.ID).ToList();
+                var list = db.ChenProfile.Where(c => c.Answers == null).OrderBy(c => c.ID).ToList();
 
                 foreach (var item in list)
                 {
@@ -698,22 +702,119 @@ namespace HtmlParseForm
                     Application.DoEvents();
 
                     //下載html
-                    var doc = ParseHtmlToDoc(item.ID, ck_unicode.Checked);
+                    var doc = ParseHtmlToDoc(item.ID + "/qa", ck_unicode.Checked);
 
                     //解析html
                     try
                     {
-                        item.Name = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(name_xapth)[0].InnerText.Trim());
-                        item.Address = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(address_xpath)[0].InnerText.Trim());
-                        item.Address = item.Address.Contains("现居") ? item.Address : null;
-                        item.Sex = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(male_xpath)[0].Attributes["title"].Value.Trim());
-                        item.Follows = int.Parse(doc.DocumentNode.SelectNodes(follows_xpath)[0].InnerText.Trim());
+                        //item.Name = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(name_xapth)[0].InnerText.Trim());
+                        //item.Address = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(address_xpath)[0].InnerText.Trim());
+                        //item.Address = item.Address.Contains("现居") ? item.Address : null;
+                        //item.Sex = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(male_xpath)[0].Attributes["title"].Value.Trim());
+                        //item.Follows = int.Parse(doc.DocumentNode.SelectNodes(follows_xpath)[0].InnerText.Trim());
+                        item.Answers = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(answers_xpanth)[0].InnerText.Trim());
                         db.SaveChanges();
                     }
                     catch (Exception ex)
                     {
                         textBox2.Text += ex.Message + Environment.NewLine;
                     }
+                }
+            }
+        }
+
+        //攜程回覆
+        private void button11_Click(object sender, EventArgs e)
+        {
+            using (var db = new RedditScanEntities())
+            {
+                var list = db.ChenList.AsNoTracking().OrderBy(c => c.UID).ToList();
+                var detail = db.chenDetail.AsNoTracking();
+
+                foreach (var item in list)
+                {
+                    if (detail.Any(c => c.ListUID == item.UID)) continue;
+
+                    textBox2.Text += item.Title + Environment.NewLine;
+                    Application.DoEvents();
+
+                    //下載html
+                    var id = item.Url.Substring(item.Url.LastIndexOf("/") + 1, item.Url.LastIndexOf(".") - item.Url.LastIndexOf("/") - 1);
+                    var url = string.Format( "http://you.ctrip.com/TravelSite/Home/TravelReplyListHtml?TravelId={0}&IsReplyRefresh=0&ReplyPageNo=1&ReplyPageSize=500&_=1507168521731", id);
+                    var doc = new HtmlAgilityPack.HtmlDocument();
+                    var xpath = @"//*[@class=""ctd_comments_username""]";
+                    var message_xpath = @"//*[@class=""ctd_comments_text""]";
+                    var postDate_xpath = @"//*[@class=""ctd_comments_contrl""]/span";
+
+                    //解析html
+                    try
+                    {
+                        using (var myWebClient = new WebClient())
+                        {
+                            myWebClient.Encoding = Encoding.UTF8;
+                            string page = myWebClient.DownloadString(url);
+                            var jsonObj = JObject.Parse(page);
+                            var html = jsonObj["Html"].ToString();
+                            doc.LoadHtml(html);
+                        }
+
+                        HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes(xpath);
+                        var count = nodes.Count;
+                        var data = new List<chenDetail>();
+                        for (int i = 0; i < count; i++)
+                        {
+                            var temp = new HtmlParseForm.Models.chenDetail();
+                            temp.Author = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(string.Format(xpath))[i].InnerText.Trim());
+                            temp.Message = HttpUtility.HtmlDecode(doc.DocumentNode.SelectNodes(string.Format(message_xpath))[i].InnerText.Trim());
+                            var time = doc.DocumentNode.SelectNodes(string.Format(postDate_xpath, i))[i].InnerText.Replace("发表于", "").Trim();
+                            temp.PostDate = DateTime.Parse(time);
+                            temp.ListUID = item.UID;
+                            data.Add(temp);
+                        }
+
+                        // save data
+                        db.chenDetail.AddRange(data);
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        textBox2.Text = ex.Message;
+                    }
+                }
+            }
+
+        }
+
+        //攜程匯出
+        private void button10_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog(this.ParentForm);
+            if (saveFileDialog1.FileName.Length > 0)
+            {
+                //匯出
+                using (var db = new RedditScanEntities())
+                {
+                    // TODO 匯出列表、明細、profile
+//                    var replies = db.Database.SqlQuery<ChenReplyViewModel>(@"
+//                          SELECT [UID] ,[ListUID],[Author],[PostDate],[Message]
+//                          FROM [RedditScan].[dbo].[chenDetail]  order by PostDate
+//                    ").ToList();
+
+//                    var profile = db.Database.SqlQuery<ChenProfileViewModel>(@"
+//                        SELECT  [Name],[Sex],[Follows],[Address],replace(replace([Answers],'回答(', ''),')','') as Answers,[Posts],[ReplyCounts]
+//                        FROM [RedditScan].[dbo].[ChenProfile]
+//                    ").ToList();
+
+                    var list = db.Database.SqlQuery<ChenListViewModel>(@"
+                        SELECT  [UID],[Title],[Author],[Description],[PostDate],[Likes],[RepliesCount]
+                        FROM [RedditScan].[dbo].[ChenList] order by CreateTime
+                    ").ToList();
+
+
+                    //ExportExcel.ExportData(replies, saveFileDialog1.FileName, "清單匯出");
+                    //ExportExcel.ExportData(profile, saveFileDialog1.FileName, "清單匯出");
+                    ExportExcel.ExportData(list, saveFileDialog1.FileName, "清單匯出");
+                    MessageBox.Show("匯出完畢!");
                 }
             }
         }

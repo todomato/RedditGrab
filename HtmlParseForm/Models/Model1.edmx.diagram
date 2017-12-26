@@ -14,6 +14,7 @@
         <EntityTypeShape EntityType="RedditScanModel.FormosaReply2" Width="1.5" PointX="5.375" PointY="3.75" />
         <EntityTypeShape EntityType="RedditScanModel.ChenList" Width="1.5" PointX="5.375" PointY="6.75" />
         <EntityTypeShape EntityType="RedditScanModel.ChenProfile" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="RedditScanModel.chenDetail" Width="1.5" PointX="7.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

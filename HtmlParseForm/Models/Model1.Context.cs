@@ -33,5 +33,6 @@ namespace HtmlParseForm.Models
         public virtual DbSet<FormosaReply2> FormosaReply2 { get; set; }
         public virtual DbSet<ChenList> ChenList { get; set; }
         public virtual DbSet<ChenProfile> ChenProfile { get; set; }
+        public virtual DbSet<chenDetail> chenDetail { get; set; }
     }
 }

@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="RedditScanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="chenDetail">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="char" MaxLength="36" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ListUID" Type="char" MaxLength="36" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="ChenList">
           <Key>
             <PropertyRef Name="UID" />
@@ -31,7 +41,7 @@
           <Property Name="Sex" Type="nvarchar" MaxLength="4" />
           <Property Name="Follows" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="20" />
-          <Property Name="Answers" Type="int" />
+          <Property Name="Answers" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="FormosaList">
           <Key>
@@ -136,6 +146,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RedditScanModelStoreContainer">
+          <EntitySet Name="chenDetail" EntityType="Self.chenDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChenList" EntityType="Self.ChenList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChenProfile" EntityType="Self.ChenProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormosaList" EntityType="Self.FormosaList" Schema="dbo" store:Type="Tables" />
@@ -182,6 +193,7 @@
           <EntitySet Name="FormosaReply2" EntityType="RedditScanModel.FormosaReply2" />
           <EntitySet Name="ChenList" EntityType="RedditScanModel.ChenList" />
           <EntitySet Name="ChenProfile" EntityType="RedditScanModel.ChenProfile" />
+          <EntitySet Name="chenDetail" EntityType="RedditScanModel.chenDetail" />
         </EntityContainer>
         <EntityType Name="List">
           <Key>
@@ -311,7 +323,17 @@
           <Property Name="Sex" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Follows" Type="Int32" />
           <Property Name="Address" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Answers" Type="Int32" />
+          <Property Name="Answers" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="chenDetail">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ListUID" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -434,6 +456,17 @@
                 <ScalarProperty Name="Sex" ColumnName="Sex" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="chenDetail">
+            <EntityTypeMapping TypeName="RedditScanModel.chenDetail">
+              <MappingFragment StoreEntitySet="chenDetail">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="ListUID" ColumnName="ListUID" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

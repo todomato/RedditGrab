@@ -12,13 +12,12 @@ namespace HtmlParseForm.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ChenProfile
+    public partial class chenDetail
     {
-        public string ID { get; set; }
-        public string Name { get; set; }
-        public string Sex { get; set; }
-        public Nullable<int> Follows { get; set; }
-        public string Address { get; set; }
-        public string Answers { get; set; }
+        public string UID { get; set; }
+        public string ListUID { get; set; }
+        public string Author { get; set; }
+        public System.DateTime PostDate { get; set; }
+        public string Message { get; set; }
     }
 }
